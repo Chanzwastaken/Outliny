@@ -1,6 +1,6 @@
 # Outliny ✨  
 **Your Personal AI Flow Builder**  
-[🚀 Live Demo](https://mellow-daifuku-fe6e3d.netlify.app/)
+[🚀 Live Demo](https://outliny.netlify.app/)
 
 <img width="1015" height="485" alt="image" src="https://github.com/user-attachments/assets/8ad6a412-d23b-4d28-8987-24d2f9a7b087" />
 
