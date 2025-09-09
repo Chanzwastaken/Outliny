@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outliny: AI Flow Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-gray-800">
+    <div id="background-animation"></div>
+
+    <!-- About Modal (Hidden by default) -->
+    <div id="aboutModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative transform transition-all scale-95 opacity-0">
+            <button id="closeAboutBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">About Outliny</h2>
+            <div class="space-y-4 text-gray-600">
+                <p>Outliny is your personal AI strategist, designed to turn any idea into a clear, actionable plan. Whether you're launching a new business, organizing a tech conference, or just figuring out what to cook for dinner, Outliny builds a structured, step-by-step flow to guide you.</p>
+                <p>Simply enter your goal, and our AI will generate a comprehensive plan broken down into logical phases and tasks. You can then edit, add, or remove items to perfectly tailor the plan to your needs.</p>
+                <p class="font-semibold text-indigo-600">Outliny: Turn Ideas Into Action.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="relative container mx-auto px-4 py-8 md:py-12">
+        <nav class="absolute top-4 right-4">
+            <button id="openAboutBtn" class="text-white/80 hover:text-white font-semibold transition">About</button>
+        </nav>
+
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-white flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-checks"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
+                Outliny
+            </h1>
+            <p class="mt-4 text-lg text-purple-200 max-w-2xl mx-auto">
+                Your Personal AI Flow Builder.
+            </p>
+        </header>
+
+        <main>
+            <div class="max-w-2xl mx-auto bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+                <label for="goalInput" class="block text-sm font-medium text-gray-700 mb-1">What do you want to plan?</label>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="text" id="goalInput" placeholder="e.g., Plan a new clothing brand" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                    <button id="generateBtn" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-sparkles"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L11.8 9.2a1.21 1.21 0 0 0 0 1.72l5.8 5.8a1.21 1.21 0 0 0 1.72 0l6.84-6.84a1.21 1.21 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-2"/><path d="M11 3H9"/><path d="M11 17H9"/><path d="M5 3v2"/><path d="M5 17v2"/></svg>
+                        Plan It
+                    </button>
+                </div>
+            </div>
+
+            <div id="resultContainer" class="mt-12">
+                <div id="loader" class="text-center hidden">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-white"></div>
+                    <p class="mt-4 text-white font-semibold">Building your plan... this may take a moment.</p>
+                </div>
+
+                <div id="errorMessage" class="text-center hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg max-w-2xl mx-auto">
+                    <strong class="font-bold">Oops!</strong>
+                    <span class="block sm:inline" id="errorText">Something went wrong. Please try again.</span>
+                </div>
+
+                <div id="flowOutput"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
