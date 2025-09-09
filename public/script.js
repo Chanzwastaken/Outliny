@@ -8,6 +8,8 @@ const flowOutput = document.getElementById('flowOutput');
 const aboutModal = document.getElementById('aboutModal');
 const openAboutBtn = document.getElementById('openAboutBtn');
 const closeAboutBtn = document.getElementById('closeAboutBtn');
+const initialStateContainer = document.getElementById('initialStateContainer');
+const examplesContainer = document.getElementById('examplesContainer');
 
 // --- Event Listeners ---
 generateBtn.addEventListener('click', generateFlow);
@@ -16,6 +18,22 @@ goalInput.addEventListener('keyup', (event) => {
         generateFlow();
     }
 });
+
+goalInput.addEventListener('input', () => {
+    if (goalInput.value.trim() === '') {
+        flowOutput.innerHTML = '';
+        errorMessage.classList.add('hidden');
+        initialStateContainer.classList.remove('hidden');
+    }
+});
+
+examplesContainer.addEventListener('click', (event) => {
+    if (event.target.tagName === 'BUTTON') {
+        goalInput.value = event.target.textContent;
+        generateFlow();
+    }
+});
+
 
 // --- About Modal Logic ---
 openAboutBtn.addEventListener('click', () => {
@@ -42,6 +60,7 @@ async function generateFlow() {
         return;
     }
 
+    initialStateContainer.classList.add('hidden');
     flowOutput.innerHTML = '';
     errorMessage.classList.add('hidden');
     loader.classList.remove('hidden');
@@ -228,6 +247,8 @@ document.addEventListener('click', function(e) {
 function showError(message) {
     errorText.textContent = message;
     errorMessage.classList.remove('hidden');
+    flowOutput.innerHTML = '';
+    initialStateContainer.classList.remove('hidden');
 }
 
 function updateProgress() {
