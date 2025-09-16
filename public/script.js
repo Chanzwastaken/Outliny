@@ -187,7 +187,7 @@ function createPhaseElement(phaseData) {
     phaseCard.innerHTML = `
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-2xl font-bold text-gray-800" contenteditable="true">${phaseData.phase_title}</h3>
-            <button class="delete-btn p-1 text-gray-400 hover:text-red-500" onclick="if(confirm('Are you sure you want to delete this phase?')) { this.closest('.phase-card').remove(); updateProgress(); }">
+            <button class="delete-btn delete-phase-btn p-1 text-gray-400 hover:text-red-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
         </div>
@@ -223,7 +223,7 @@ function createTaskElement(taskData) {
                      <span class="text-gray-800 flex-grow" contenteditable="true">${taskData.task_name}</span>
                      ${durationText}
                 </div>
-                <button class="delete-btn p-1 text-gray-400 hover:text-red-500 ml-2" onclick="if(confirm('Are you sure you want to delete this task?')) { this.closest('.task-item').remove(); updateProgress(); }">
+                <button class="delete-btn delete-task-btn p-1 text-gray-400 hover:text-red-500 ml-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                 </button>
             </div>
@@ -232,17 +232,58 @@ function createTaskElement(taskData) {
     `;
 }
 
-// Event delegation for checkboxes
+// --- Event Delegation ---
+
+// Resets any 'confirming' delete buttons if user clicks elsewhere
+function resetDeleteButtons(e) {
+    document.querySelectorAll('.delete-btn.is-confirming').forEach(btn => {
+        if (!e || !btn.contains(e.target)) {
+            btn.innerHTML = btn.dataset.originalContent;
+            btn.classList.remove('is-confirming', 'bg-red-500', 'text-white');
+        }
+    });
+}
+
 document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('check-box')) {
-        const taskItem = e.target.closest('.task-item');
+    const target = e.target;
+    const deleteBtn = target.closest('.delete-btn');
+
+    // Handle Checkboxes
+    if (target.classList.contains('check-box')) {
+        const taskItem = target.closest('.task-item');
         taskItem.classList.toggle('opacity-50');
         taskItem.querySelector('span[contenteditable]').classList.toggle('line-through');
-        e.target.classList.toggle('bg-indigo-500');
-        e.target.classList.toggle('border-indigo-500');
+        target.classList.toggle('bg-indigo-500');
+        target.classList.toggle('border-indigo-500');
         updateProgress();
+        return; // Early exit
+    }
+
+    // Before handling a new delete button, reset others
+    if (deleteBtn) {
+        resetDeleteButtons(e);
+    } else {
+        resetDeleteButtons();
+        return; // Early exit if the click wasn't on a delete button at all
+    }
+
+    // Handle Delete Buttons (Phase or Task)
+    if (deleteBtn.classList.contains('is-confirming')) {
+        // Second click: delete the element
+        if (deleteBtn.classList.contains('delete-phase-btn')) {
+            deleteBtn.closest('.phase-card').remove();
+        } else if (deleteBtn.classList.contains('delete-task-btn')) {
+            deleteBtn.closest('.task-item').remove();
+        }
+        updateProgress();
+    } else {
+        // First click: show confirmation
+        deleteBtn.dataset.originalContent = deleteBtn.innerHTML;
+        deleteBtn.innerHTML = 'Confirm?';
+        deleteBtn.classList.add('is-confirming', 'bg-red-500', 'text-white');
     }
 });
+
 
 function showError(message) {
     errorText.textContent = message;
