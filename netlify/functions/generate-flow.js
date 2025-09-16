@@ -13,7 +13,7 @@ exports.handler = async function(event) {
             return { statusCode: 500, body: JSON.stringify({ error: "Server configuration error: API key is missing." }) };
         }
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
 
         const payload = {
             contents: [{ role: "user", parts: [{ text: prompt }] }],
